@@ -9,7 +9,7 @@ namespace Wolt_server.Controllers
     {
         public static List<Orders> orders_list = new List<Orders>()
         {
-            new Orders("","","",new DateTime(2024,10,6),"")
+            new Orders("1","","",new DateTime(2024,10,6),"")
 
         };
 
