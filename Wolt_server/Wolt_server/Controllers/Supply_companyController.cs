@@ -7,43 +7,46 @@ namespace Wolt_server.Controllers
     [ApiController]
     public class Supply_companyController : ControllerBase
     {
-        public static List<Supply_company> companies = new List<Supply_company>() { };
+        private readonly IDataContext _context;
 
-
+        public Supply_companyController(IDataContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
 
-        public IEnumerable<Supply_company> GetOrders()
+        public ActionResult GetOrders()
         {
-            return companies;
+            return Ok(_context.companies);
         }
 
         [HttpGet("count_orders")]
 
-        public IEnumerable<Supply_company> GetByBusiness(int count_orders)
+        public ActionResult GetByBusiness(int count_orders)
         {
             List<Supply_company> companiesWithCountOrders = new List<Supply_company>() { };
-            for (int i = 0; i < companies.Count; i++)
+            for (int i = 0; i < _context.companies.Count; i++)
             {
-                if (companies[i].Orders_id.Count == count_orders)
-                    companiesWithCountOrders.Add(companies[i]);
+                if (_context.companies[i].Orders_id.Count == count_orders)
+                    companiesWithCountOrders.Add(_context.companies[i]);
             }
 
-            return companiesWithCountOrders;
+            return Ok(companiesWithCountOrders);
         }
 
 
         [HttpGet("company_id")]
 
-        public Supply_company GetByID(string id)
+        public ActionResult GetByID(string id)
         {
 
-            for (int i = 0; i < companies.Count; i++)
+            for (int i = 0; i < _context.companies.Count; i++)
             {
-                if (companies[i].Company_id == id)
-                    return companies[i];
+                if (_context.companies[i].Company_id == id)
+                    return Ok(_context.companies[i]);
             }
-            return null;
+            return NotFound("the id isn't found");
         }
 
         [HttpPost]
@@ -51,37 +54,59 @@ namespace Wolt_server.Controllers
         public void PostNewOrder([FromBody] Supply_company company)
         {
             bool flag = true;
-            for (int i = 0; i < companies.Count; i++)
+            for (int i = 0; i < _context.companies.Count; i++)
             {
-                if (companies[i].Company_id == company.Company_id)
+                if (_context.companies[i].Company_id == company.Company_id)
                 {
                     flag = false;
                     break;
                 }
             }
             if (flag)
-                companies.Add(company);
+                _context.companies.Add(company);
         }
-       
 
+        [HttpPut("update company {id}")]
+        public ActionResult PutOrder(string id, [FromBody] Supply_company company)
+        {
+            if (_context.companies == null)
+            {
+                return BadRequest();
+            }
+            if (_context.companies.Find(item => item.Company_id.Equals(id)) == null)
+            {
+                return NotFound();
+            }
+            Supply_company s = _context.companies.Find(item => item.Company_id.Equals(id));
+            s.Status = company.Status;
+            s.Business_name= company.Business_name;
+            s.Address=company.Address;
+            s.Company_id= company.Company_id;   
+            s.Phone_number= company.Phone_number;
+            s.Orders_id= company.Orders_id;
+
+            return Ok();
+
+        }
 
         [HttpPut("status change")]
 
-        public string Deleteorder(string id,bool status)
+        public ActionResult Deleteorder(string id,bool status)
         {
-            for (int i = 0; i < companies.Count; i++)
+            for (int i = 0; i < _context.companies.Count; i++)
             {
-                if (companies[i].Company_id == id)
+                if (_context.companies[i].Company_id == id)
                 {
-                    companies[i].Status= status;
-                    return "the status changed";
+                    _context.companies[i].Status= status;
+                    return Ok("the status changed");
                     
                 }
             }
-            return "this company is not exists";
+            return NotFound("this company is not exists");
         }
 
 
+        //אין מחיקת חנויות אלא שינוי סטטוס
 
 
     }

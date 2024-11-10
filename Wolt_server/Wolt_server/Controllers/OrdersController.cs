@@ -7,45 +7,48 @@ namespace Wolt_server.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        public static List<Orders> orders_list = new List<Orders>()
-        {
-            new Orders("1","","",new DateTime(2024,10,6),"")
+        private readonly IDataContext _context;
 
-        };
+        public OrdersController(IDataContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
 
-        public IEnumerable<Orders> GetOrders()
+        public ActionResult GetOrders()
         {
-            return orders_list;
+            return Ok(_context.orders_list);
         }
 
         [HttpGet("business_id")]
 
-        public IEnumerable<Orders> GetByBusiness(string business)
+        public ActionResult GetByBusiness(string business)
         {
             List<Orders> ordersByBusiness = new List<Orders>() { };
-            for (int i = 0; i < orders_list.Count; i++)
+            for (int i = 0; i < _context.orders_list.Count; i++)
             {
-                if (orders_list[i].Business_id == business)
-                    ordersByBusiness.Add(orders_list[i]);
+                if (_context.orders_list[i].Business_id == business)
+                    ordersByBusiness.Add(_context.orders_list[i]);
             }
 
-            return ordersByBusiness;
+            return Ok(ordersByBusiness);
         }
 
 
-        [HttpGet("Order_id")]
+        [HttpGet("Order_id {id}")]
 
-        public Orders GetByID(string id)
+        public ActionResult GetByID(string id)
         {
 
-            for (int i = 0; i < orders_list.Count; i++)
+            for (int i = 0; i < _context.orders_list.Count; i++)
             {
-                if (orders_list[i].Order_id == id)
-                    return orders_list[i];
+                if (_context.orders_list[i].Order_id == id)
+                    return Ok(_context.orders_list[i]);
             }
-            return null;
+
+
+            return NotFound("the id isn't found");
         }
 
         [HttpPost]
@@ -53,19 +56,20 @@ namespace Wolt_server.Controllers
         public void PostNewOrder([FromBody] Orders orders)
         {
             bool flag = true;
-            for (int i = 0; i < orders_list.Count; i++)
+            for (int i = 0; i < _context.orders_list.Count; i++)
             {
-                if (orders_list[i].Order_id == orders.Order_id)
+                if (_context.orders_list[i].Order_id == orders.Order_id)
                 {
                     flag = false;
                     break;
                 }
             }
             if (flag)
-                orders_list.Add(orders);
+                _context.orders_list.Add(orders);
         }
 
         //[HttpPost]
+        //לא למדנו גישה לקונטרולר אחר
         //public void PostNewFlight([FromBody] Flight newFlight)
         //{
         //    bool flag = true;
@@ -77,17 +81,39 @@ namespace Wolt_server.Controllers
         //    if (flag) flights.Add(newFlight);
         //}
 
+        [HttpPut("update order {id}")]
+        public ActionResult PutOrder(string id, [FromBody] Orders orders)
+        {
+            if (_context.orders_list == null)
+            {
+                return BadRequest();
+            }
+            if (_context.orders_list.Find(item => item.Order_id.Equals(id)) == null)
+            {
+                return NotFound();
+            }
+            Orders o = _context.orders_list.Find(item => item.Order_id.Equals(id));
+            o.Order_id = orders.Order_id;
+            o.Order_date = orders.Order_date;
+            o.Oreder_cost=orders.Oreder_cost;
+            o.Business_id=orders.Business_id;
+            o.Customer_id = orders.Customer_id;
+            
+            return Ok();
 
+        }
+
+      
 
         [HttpDelete]
 
         public void Deleteorder(string id)
         {
-            for (int i = 0; i < orders_list.Count; i++)
+            for (int i = 0; i < _context.orders_list.Count; i++)
             {
-                if (orders_list[i].Order_id == id)
+                if (_context.orders_list[i].Order_id == id)
                 {
-                    orders_list.Remove(orders_list[i]);
+                    _context.orders_list.Remove(_context.orders_list[i]);
                     break;
                 }
             }

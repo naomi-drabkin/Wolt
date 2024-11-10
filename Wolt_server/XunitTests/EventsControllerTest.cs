@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,45 +11,53 @@ namespace XunitTests
 {
     public class EventsControllerTest
     {
+
+        private readonly CustomerController _contextCustomer;
+        private readonly OrdersController _contextOrder;
+
+        public EventsControllerTest()
+        {
+            FakeContext f = new FakeContext();
+            _contextCustomer = new CustomerController(f);
+            _contextOrder = new OrdersController(f);
+        }
+
         [Fact]
         public void GetOrders_ReturnsOk()
         {
 
 
             //Act
-            var controller = new CustomerController();
-            var result = controller.GetOrders();
+            var result = _contextCustomer.GetOrders();
             //Assert
 
-            Assert.IsType<List<Customer>>(result);
+            Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]
         public void GetByID_ReturnsOk()
         {
             //Arrange
-            var id = "1";
+            var id = "2";
 
             //Act
-            var controller = new OrdersController();
-            var result = controller.GetByID(id);
+            var result = _contextOrder.GetByID(id);
 
             //Assert
-            Assert.IsType<Orders>(result);
+            Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]
         public void GetByID_Returnsnull()
         {
             //Arrange
-            var id = "2";
+            var id = "1";
 
             //Act
-            var controller = new OrdersController();
-            var result = controller.GetByID(id);
+            var result = _contextOrder.GetByID(id);
 
             //Assert
-            Assert.Null(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

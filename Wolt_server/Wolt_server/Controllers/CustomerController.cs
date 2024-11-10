@@ -7,14 +7,19 @@ namespace Wolt_server.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        public static List<Customer> customers = new List<Customer>() { };
+        private readonly IDataContext _context;
+
+        public CustomerController(IDataContext context)
+        {
+            _context = context;
+        }
 
 
         [HttpGet]
 
-        public IEnumerable<Customer> GetOrders()
+        public ActionResult GetOrders()
         {
-            return customers;
+            return Ok(_context.customers);
         }
 
         //[HttpGet("Date")]
@@ -40,54 +45,82 @@ namespace Wolt_server.Controllers
         //}
 
 
-        [HttpGet("customer_id")]
+        [HttpGet("{customer_id}")]
 
-        public Customer GetByID(string id)
+        public ActionResult GetByID(string id)
         {
 
-            for (int i = 0; i < customers.Count; i++)
+            for (int i = 0; i < _context.customers.Count; i++)
             {
-                if (customers[i].Customer_id == id)
-                    return customers[i];
+                if (_context.customers[i].Customer_id == id)
+                    return Ok(_context.customers[i]);
             }
-            return null;
+            return NotFound("the id isn't found");
         }
 
         [HttpPost]
 
-        public void PostNewOrder([FromBody] Customer customer)
+        public ActionResult PostNewOrder([FromBody] Customer customer)
         {
             bool flag = true;
-            for (int i = 0; i < customers.Count; i++)
+            for (int i = 0; i < _context.customers.Count; i++)
             {
-                if (customers[i].Customer_id == customer.Customer_id)
+                if (_context.customers[i].Customer_id == customer.Customer_id)
                 {
                     flag = false;
                     break;
                 }
             }
             if (flag)
-                customers.Add(customer);
+            {
+                _context.customers.Add(customer);
+                return Ok();
+            }
+            return NotFound();
+        }
+
+        [HttpPut("update customer {id}")]
+        public ActionResult PutCustomer(string id,[FromBody] Customer customer)
+        {
+            if(_context.customers == null)
+            {
+                return BadRequest();
+            }
+            if(_context.customers.Find(item => item.Customer_id.Equals(id)) == null)
+            {
+                return NotFound();
+            }
+            Customer c = _context.customers.Find(item => item.Customer_id.Equals(id));
+            c.Customer_id=customer.Customer_id;
+            c.Phone_number=customer.Phone_number;
+            c.Customer_name = customer.Customer_name;
+            c.Status = customer.Status;
+            c.Building_address = customer.Building_address; 
+            c.floor=customer.floor;
+            c.Orders_id = customer.Orders_id;
+            return Ok();
+
         }
 
 
 
         [HttpPut("status change")]
 
-        public string Deleteorder(string id, bool status)
+        public ActionResult Deleteorder(string id, bool status)
         {
-            for (int i = 0; i < customers.Count; i++)
+            for (int i = 0; i < _context.customers.Count; i++)
             {
-                if (customers[i].Customer_id == id)
+                if (_context.customers[i].Customer_id == id)
                 {
-                    customers[i].Status = status;
-                    return "the status changed";
+                    _context.customers[i].Status = status;
+                    return Ok("the status changed");
 
                 }
             }
-            return "this company is not exists";
+            return NotFound("this company is not exists");
         }
 
+        //אין מחיקת לקוחות אלא שינוי סטטוס
 
     }
 }
