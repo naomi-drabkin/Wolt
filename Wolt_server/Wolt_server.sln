@@ -5,7 +5,15 @@ VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wolt_server", "Wolt_server\Wolt_server.csproj", "{549B1261-6CC7-467C-8871-76AE7B5BA394}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XunitTests", "XunitTests\XunitTests.csproj", "{318F1976-042B-4B69-9E2A-EA5B768DAC18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XunitTests", "XunitTests\XunitTests.csproj", "{318F1976-042B-4B69-9E2A-EA5B768DAC18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wolt.API", "Wolt.API\Wolt.API.csproj", "{28152E9E-FCA0-460F-8B90-31CB1AE36CF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wolt.Core", "Wolt.Core\Wolt.Core.csproj", "{84E0AE95-FE0F-4A68-96D2-D5942F36A8BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wolt.Data", "Wolt.Data\Wolt.Data.csproj", "{926D013C-4A4A-494A-A017-D3BFF56DC677}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wolt.Service", "Wolt.Service\Wolt.Service.csproj", "{3A6F5E5A-B42A-41EF-A7C6-2ADABE84542E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,22 @@ Global
 		{318F1976-042B-4B69-9E2A-EA5B768DAC18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{318F1976-042B-4B69-9E2A-EA5B768DAC18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{318F1976-042B-4B69-9E2A-EA5B768DAC18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28152E9E-FCA0-460F-8B90-31CB1AE36CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28152E9E-FCA0-460F-8B90-31CB1AE36CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28152E9E-FCA0-460F-8B90-31CB1AE36CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28152E9E-FCA0-460F-8B90-31CB1AE36CF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84E0AE95-FE0F-4A68-96D2-D5942F36A8BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84E0AE95-FE0F-4A68-96D2-D5942F36A8BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84E0AE95-FE0F-4A68-96D2-D5942F36A8BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84E0AE95-FE0F-4A68-96D2-D5942F36A8BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{926D013C-4A4A-494A-A017-D3BFF56DC677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{926D013C-4A4A-494A-A017-D3BFF56DC677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{926D013C-4A4A-494A-A017-D3BFF56DC677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{926D013C-4A4A-494A-A017-D3BFF56DC677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A6F5E5A-B42A-41EF-A7C6-2ADABE84542E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A6F5E5A-B42A-41EF-A7C6-2ADABE84542E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A6F5E5A-B42A-41EF-A7C6-2ADABE84542E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A6F5E5A-B42A-41EF-A7C6-2ADABE84542E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
