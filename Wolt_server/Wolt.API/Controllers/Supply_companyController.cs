@@ -30,8 +30,10 @@ namespace Wolt.API.Controllers
 
         public ActionResult GetByID(string id)
         {
-            if (_supply_companyService.GetByID(id) != null)
-                return Ok(_supply_companyService.GetByID(id));
+
+            Supply_company s = _supply_companyService.GetByID(id);
+            if ( s != null)
+                return Ok(s);
 
             return NotFound("the company isn't exsist");
 

@@ -35,9 +35,9 @@ namespace Wolt.API.Controllers
 
         public ActionResult GetByID(string id)
         {
-
-            if (_orderService.GetByID(id) != null)
-                return Ok(_orderService.GetByID(id));
+            Orders o = _orderService.GetByID(id);
+            if ( o!= null)
+                return Ok(o);
 
             return NotFound("the order isn't exsist");
 

@@ -40,7 +40,7 @@ namespace Wolt.Service
         {
             Orders o = _orderRepository.GetList().Find(p => p.Order_id.Equals(orders.Order_id));
 
-            if (o != null)
+            if (o == null)
             {
                 _orderRepository.PostNewOrder(orders);
                 return true;

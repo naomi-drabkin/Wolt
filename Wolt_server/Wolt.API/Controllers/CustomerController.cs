@@ -48,13 +48,13 @@ namespace Wolt.API.Controllers
         //}
 
 
-        [HttpGet("{customer_id}")]
+        [HttpGet("customer_id{id}")]
 
         public ActionResult GetByID(string id)
         {
-
-            if (_customerService.GetByID(id) != null)
-                return Ok("the customer exsist");
+            Customer c = _customerService.GetByID(id);
+            if ( c!= null)
+                return Ok(c);
             return NotFound("the customer isn't exsist");
             
         }

@@ -37,7 +37,7 @@ namespace Wolt.Service
         {
             Customer c = _customerRrepository.GetList().Find(p => p.Customer_id.Equals(customer.Customer_id));
 
-            if(c != null)
+            if(c == null)
             {
                 _customerRrepository.PostNewCustomer(customer);
                 return true;

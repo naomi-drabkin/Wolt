@@ -42,7 +42,7 @@ namespace Wolt.Service
         {
             Supply_company b = _supply_CompanyRepository.GetList().Find(p => p.Company_id.Equals(supply_company.Company_id));
 
-            if (b != null)
+            if (b == null)
             {
                 _supply_CompanyRepository.PostNewCompany(supply_company);
                 return true;
