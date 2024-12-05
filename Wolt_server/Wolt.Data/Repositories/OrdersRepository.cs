@@ -20,18 +20,18 @@ namespace Wolt.Data.Repositories
 
         public List<Orders> GetList()
         {
-            return _context.orders_list;
+            return _context.orders_list.ToList();
         }
 
         public Orders GetById(string id)
         {
-            return _context.orders_list.Find(o=>o.Order_id.Equals(id));
+            return _context.orders_list.ToList().Find(o=>o.Order_id.Equals(id));
         }
 
         public List<Orders> GetByBusiness(string business)
         {
             List<Orders> ordersByBusiness = new List<Orders>() { };
-            ordersByBusiness.Add(_context.orders_list.Find(b => b.Business_id.Equals(business)));
+            ordersByBusiness.Add(_context.orders_list.ToList().Find(b => b.Business_id.Equals(business)));
             return ordersByBusiness;
         }
 

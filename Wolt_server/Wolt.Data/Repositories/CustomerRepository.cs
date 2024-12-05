@@ -21,12 +21,12 @@ namespace Wolt.Data.Repositories
 
         public List<Customer> GetList()
         {
-            return _context.customers;
+            return _context.customers.ToList();
         }
 
         public Customer GetById(string id)
         {
-            return _context.customers.Find(p => p.Customer_id.Equals(id));
+            return _context.customers.ToList().Find(p => p.Customer_id.Equals(id));
         }
 
         public void PostNewCustomer(Customer customer)
@@ -42,7 +42,7 @@ namespace Wolt.Data.Repositories
             c.Status = customer.Status;
             c.Building_address = customer.Building_address;
             c.floor = customer.floor;
-            c.Orders_id = customer.Orders_id;
+            //c.Orders_id = customer.Orders_id;
         }
 
 

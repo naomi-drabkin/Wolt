@@ -22,7 +22,8 @@ builder.Services.AddScoped<IOrderRepository, OrdersRepository>();
 builder.Services.AddScoped<ISupply_companyService, Supply_companyService>();
 builder.Services.AddScoped<ISupply_companyRepository, Supply_companyRepository>();
 
-builder.Services.AddSingleton<DataContext>();
+builder.Services.AddDbContext<DataContext>();
+//builder.Services.AddSingleton<DataContext>();
 
 var app = builder.Build();
 

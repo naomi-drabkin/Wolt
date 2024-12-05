@@ -23,18 +23,18 @@ namespace Wolt.Data.Repositories
 
         public List<Supply_company> GetList()
         {
-            return _context.companies;
+            return _context.companies.ToList();
         }
 
         public Supply_company GetById(string id)
         {
-            return _context.companies.Find(o => o.Company_id.Equals(id));
+            return _context.companies.ToList().Find(o => o.Company_id.Equals(id));
         }
 
         public List<Supply_company> GetByStatus(bool status)//רשימת המפעלים הפעילים
         {
             List<Supply_company> buisnessWhithSameCountOrders = new List<Supply_company>() { };
-            buisnessWhithSameCountOrders.Add(_context.companies.Find(o => o.Status.Equals(status)));
+            buisnessWhithSameCountOrders.Add(_context.companies.ToList().Find(o => o.Status.Equals(status)));
             return buisnessWhithSameCountOrders;
         }
 
@@ -50,7 +50,7 @@ namespace Wolt.Data.Repositories
             s.Address = company.Address;
             s.Company_id = company.Company_id;
             s.Phone_number = company.Phone_number;
-            s.Orders_id = company.Orders_id;
+            //s.Orders_id = company.Orders_id;
 
         }
 

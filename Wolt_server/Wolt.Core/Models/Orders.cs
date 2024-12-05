@@ -1,7 +1,11 @@
-﻿namespace Wolt.Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Wolt.Core.Models
 {
     public class Orders
     {
+        [Key]
+        public string ID { get; set; }
         public string Order_id { get; set; }
         public string Business_id { get; set; }
         public string Customer_id { get; set; }
@@ -17,5 +21,6 @@
             Oreder_cost = oreder_cost;
         }
 
+        
     }
 }
