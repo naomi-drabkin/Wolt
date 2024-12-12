@@ -32,6 +32,7 @@ namespace Wolt.Data.Repositories
         public void PostNewCustomer(Customer customer)
         {
             _context.customers.Add(customer);
+            _context.SaveChanges();
         }
 
         public void updateCustomer(Customer  c ,Customer customer)
@@ -41,14 +42,17 @@ namespace Wolt.Data.Repositories
             c.Customer_name = customer.Customer_name;
             c.Status = customer.Status;
             c.Building_address = customer.Building_address;
-            c.floor = customer.floor;
-            //c.Orders_id = customer.Orders_id;
+            c.Floor = customer.Floor;
+            c.Orders = customer.Orders;
+            _context.SaveChanges();
         }
 
 
         public void DeleteCustomer(Customer c, bool status)
         {
             c.Status = status;
+            _context.SaveChanges();
+
         }
 
     }

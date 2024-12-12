@@ -41,6 +41,8 @@ namespace Wolt.Data.Repositories
         public void PostNewCompany(Supply_company supply_company)
         {
             _context.companies.Add(supply_company);
+            _context.SaveChanges();
+
         }
 
         public void putCompany(Supply_company s, Supply_company company)
@@ -50,13 +52,16 @@ namespace Wolt.Data.Repositories
             s.Address = company.Address;
             s.Company_id = company.Company_id;
             s.Phone_number = company.Phone_number;
-            //s.Orders_id = company.Orders_id;
+            s.Orders = company.Orders;
+            _context.SaveChanges();
 
         }
 
         public void DeletCompany(Supply_company s , bool status)
         {
             s.Status = status;
+            _context.SaveChanges();
+
         }
 
     }

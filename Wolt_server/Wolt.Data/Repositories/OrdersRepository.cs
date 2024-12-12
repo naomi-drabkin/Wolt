@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,13 +32,15 @@ namespace Wolt.Data.Repositories
         public List<Orders> GetByBusiness(string business)
         {
             List<Orders> ordersByBusiness = new List<Orders>() { };
-            ordersByBusiness.Add(_context.orders_list.ToList().Find(b => b.Business_id.Equals(business)));
+            ordersByBusiness.Add(_context.orders_list.ToList().Find(b => b.Business.Equals(business)));
             return ordersByBusiness;
         }
 
         public void PostNewOrder(Orders orders)
         {
             _context.orders_list.Add(orders);
+            _context.SaveChanges();
+
         }
 
         public void putOrder(Orders o , Orders orders)
@@ -45,14 +48,17 @@ namespace Wolt.Data.Repositories
             o.Order_id = orders.Order_id;
             o.Order_date = orders.Order_date;
             o.Oreder_cost = orders.Oreder_cost;
-            o.Business_id = orders.Business_id;
-            o.Customer_id = orders.Customer_id;
+            o.Customer = orders.Customer;
+            o.Business = orders.Business;
+            _context.SaveChanges();
 
         }
 
         public void DeletOrders(Orders o)
         {
             _context.orders_list.Remove(o);
+            _context.SaveChanges();
+
         }
     }
 }

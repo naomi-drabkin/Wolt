@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wolt.Data;
 
@@ -11,9 +12,10 @@ using Wolt.Data;
 namespace Wolt.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241212201311_one-to-many")]
+    partial class onetomany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,15 +41,15 @@ namespace Wolt.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
-
                     b.Property<string>("Phone_number")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
+
+                    b.Property<int>("floor")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -59,7 +61,10 @@ namespace Wolt.Data.Migrations
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BusinessID")
+                    b.Property<int>("BusinessID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BusinessID1")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -78,9 +83,12 @@ namespace Wolt.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("customerID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("BusinessID");
+                    b.HasIndex("BusinessID1");
 
                     b.HasIndex("CustomerID");
 
@@ -119,8 +127,8 @@ namespace Wolt.Data.Migrations
             modelBuilder.Entity("Wolt.Core.Models.Orders", b =>
                 {
                     b.HasOne("Wolt.Core.Models.Supply_company", "Business")
-                        .WithMany("Orders")
-                        .HasForeignKey("BusinessID")
+                        .WithMany("orders")
+                        .HasForeignKey("BusinessID1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -142,7 +150,7 @@ namespace Wolt.Data.Migrations
 
             modelBuilder.Entity("Wolt.Core.Models.Supply_company", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("orders");
                 });
 #pragma warning restore 612, 618
         }
