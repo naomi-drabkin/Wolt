@@ -5,7 +5,7 @@ namespace Wolt.Core.Models
     public class Supply_company
     {
         [Key]
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Company_id { get; set; }
         public string Business_name { get; set; }
         public string Phone_number { get; set; }

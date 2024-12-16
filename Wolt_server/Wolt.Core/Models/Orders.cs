@@ -1,18 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Wolt.Core.Models
 {
     public class Orders
     {
         [Key]
-        public string ID { get; set; }
-        public string Order_id { get; set; }
+        public int ID { get; set; }
+        public int Order_id { get; set; }
+
+        [ForeignKey(nameof(Order_id))]
         public Supply_company Business { get; set; }
         //public int BusinessID { get; set; }
         public DateTime Order_date { get; set; }
         public string Oreder_cost { get; set; }
-        
-        //public int CustomerID { get; set; }
+
+        public int CustomerID { get; set; }
+
+        [ForeignKey(nameof(CustomerID))]
         public Customer Customer { get; set; }
 
 

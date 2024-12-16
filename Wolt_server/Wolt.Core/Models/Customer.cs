@@ -5,7 +5,7 @@ namespace Wolt.Core.Models
     public class Customer
     {
         [Key]
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Customer_id { get; set; }
         public string Customer_name { get; set; }
         public string Building_address { get; set; }

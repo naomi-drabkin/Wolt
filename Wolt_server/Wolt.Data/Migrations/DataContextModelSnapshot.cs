@@ -24,8 +24,11 @@ namespace Wolt.Data.Migrations
 
             modelBuilder.Entity("Wolt.Core.Models.Customer", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Building_address")
                         .IsRequired()
@@ -56,23 +59,20 @@ namespace Wolt.Data.Migrations
 
             modelBuilder.Entity("Wolt.Core.Models.Orders", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("BusinessID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<string>("CustomerID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CustomerID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Order_date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Order_id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Order_id")
+                        .HasColumnType("int");
 
                     b.Property<string>("Oreder_cost")
                         .IsRequired()
@@ -80,17 +80,20 @@ namespace Wolt.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BusinessID");
-
                     b.HasIndex("CustomerID");
+
+                    b.HasIndex("Order_id");
 
                     b.ToTable("orders_list");
                 });
 
             modelBuilder.Entity("Wolt.Core.Models.Supply_company", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -118,15 +121,15 @@ namespace Wolt.Data.Migrations
 
             modelBuilder.Entity("Wolt.Core.Models.Orders", b =>
                 {
-                    b.HasOne("Wolt.Core.Models.Supply_company", "Business")
-                        .WithMany("Orders")
-                        .HasForeignKey("BusinessID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Wolt.Core.Models.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Wolt.Core.Models.Supply_company", "Business")
+                        .WithMany("Orders")
+                        .HasForeignKey("Order_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using Wolt.Core.Repositories;
 using Wolt.Core.Services;
 using Wolt.Data;
@@ -24,6 +25,8 @@ builder.Services.AddScoped<ISupply_companyRepository, Supply_companyRepository>(
 
 builder.Services.AddDbContext<DataContext>();
 //builder.Services.AddSingleton<DataContext>();
+
+
 
 var app = builder.Build();
 
