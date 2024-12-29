@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Wolt.Core.DTOs;
 using Wolt.Core.Models;
 using Wolt.Core.Services;
 
@@ -10,24 +12,26 @@ namespace Wolt.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
-
-        public OrdersController(IOrderService orderService)
+        private readonly IMapper _imapper;
+        public OrdersController(IOrderService orderService, IMapper imapper)
         {
             _orderService = orderService;
+            _imapper = imapper;
         }
 
         [HttpGet]
 
         public ActionResult GetOrders()
         {
-            return Ok(_orderService.GetAll());
+            
+            return Ok(_imapper.Map<IEnumerable<OrderGetDto>>(_orderService.GetAll()));
         }
 
         [HttpGet("business_id")]
 
         public ActionResult GetByBusiness(string business)
         {
-            return Ok(_orderService.GetByBusiness(business));
+            return Ok(_imapper.Map<OrderGetDto>(_orderService.GetByBusiness(business)));
         }
 
 
@@ -37,7 +41,10 @@ namespace Wolt.API.Controllers
         {
             Orders o = _orderService.GetByID(id);
             if ( o!= null)
-                return Ok(o);
+            {
+                var ordermap = _imapper.Map<OrderGetDto>(o);
+                return Ok(ordermap);
+            }
 
             return NotFound("the order isn't exsist");
 
@@ -45,9 +52,10 @@ namespace Wolt.API.Controllers
 
         [HttpPost]
 
-        public ActionResult PostNewOrder([FromBody] Orders orders)
+        public ActionResult PostNewOrder([FromBody] OrderDto orders)
         {
-            if (_orderService.PostNewOrder(orders) == true)
+            var orderMap = _imapper.Map<Orders>(orders);
+            if (_orderService.PostNewOrder(orderMap) == true)
                 return Ok("the order Added");
 
             return NotFound("the order is exsist");
@@ -67,9 +75,10 @@ namespace Wolt.API.Controllers
         //}
 
         [HttpPut("update order {id}")]
-        public ActionResult PutOrder(string id, [FromBody] Orders orders)
+        public ActionResult PutOrder(string id, [FromBody] OrderDto orders)
         {
-            if (_orderService.PutOrder(id, orders) == true)
+            var orderMap = _imapper.Map<Orders>(orders);
+            if (_orderService.PutOrder(id, orderMap) == true)
                 return Ok("the order update");
 
             return NotFound("the order isn't found");

@@ -32,7 +32,7 @@ namespace Wolt.Data.Repositories
         public List<Orders> GetByBusiness(string business)
         {
             List<Orders> ordersByBusiness = new List<Orders>() { };
-            ordersByBusiness.Add(_context.orders_list.ToList().Find(b => b.Business.Equals(business)));
+            ordersByBusiness = _context.orders_list.ToList().FindAll(b => b.Business.Equals(business));
             return ordersByBusiness;
         }
 

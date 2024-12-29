@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Wolt.Core.DTOs;
 using Wolt.Core.Models;
 using Wolt.Core.Services;
 using Wolt.Service;
@@ -11,17 +13,19 @@ namespace Wolt.API.Controllers
     public class Supply_companyController : ControllerBase
     {
         private readonly ISupply_companyService _supply_companyService;
-
-        public Supply_companyController(ISupply_companyService supply_companyService)
+        private readonly IMapper _imapper;
+        public Supply_companyController(ISupply_companyService supply_companyService,IMapper imapper)
         {
             _supply_companyService = supply_companyService;
+            _imapper = imapper;
         }
 
         [HttpGet]
 
         public ActionResult GetCompany()
         {
-            return Ok(_supply_companyService.GetAll());
+            
+            return Ok(_imapper.Map<IEnumerable<Supply_CompanyGetDto>>(_supply_companyService.GetAll()));
         }
 
        
@@ -33,8 +37,10 @@ namespace Wolt.API.Controllers
 
             Supply_company s = _supply_companyService.GetByID(id);
             if ( s != null)
-                return Ok(s);
-
+            {
+                var Supply_mapper = _imapper.Map< Supply_CompanyGetDto>(s);
+                return Ok(Supply_mapper);
+            }
             return NotFound("the company isn't exsist");
 
 
@@ -44,24 +50,26 @@ namespace Wolt.API.Controllers
 
         public ActionResult GetByStutus(bool status)
         {
-            return Ok(_supply_companyService.GetByStatus(status));
+            return Ok(_imapper.Map<IEnumerable<Supply_CompanyGetDto>>(_supply_companyService.GetByStatus(status)));
         }
 
 
         [HttpPost]
 
-        public ActionResult PostNewCompany([FromBody] Supply_company company)
+        public ActionResult PostNewCompany([FromBody] Supply_CompanyDto company)
         {
-            if (_supply_companyService.PostNewCompany(company))
+            var Supply_mapper = _imapper.Map<Supply_company>(company);
+            if (_supply_companyService.PostNewCompany(Supply_mapper))
                 return Ok("the company Added");
             return NotFound("the company is exsist");
         }
 
 
         [HttpPut("update company {id}")]
-        public ActionResult PutCompany(string id, [FromBody] Supply_company company)
+        public ActionResult PutCompany(string id, [FromBody] Supply_CompanyDto company)
         {
-            if (_supply_companyService.PutCompany(id, company))
+            var Supply_mapper = _imapper.Map<Supply_company>(company);
+            if (_supply_companyService.PutCompany(id, Supply_mapper))
                 return Ok("the company changed");
             return NotFound("the company isn't exsist");
 

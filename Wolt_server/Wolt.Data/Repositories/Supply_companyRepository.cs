@@ -34,7 +34,7 @@ namespace Wolt.Data.Repositories
         public List<Supply_company> GetByStatus(bool status)//רשימת המפעלים הפעילים
         {
             List<Supply_company> buisnessWhithSameCountOrders = new List<Supply_company>() { };
-            buisnessWhithSameCountOrders.Add(_context.companies.ToList().Find(o => o.Status.Equals(status)));
+            buisnessWhithSameCountOrders = _context.companies.ToList().FindAll(o => o.Status.Equals(status));
             return buisnessWhithSameCountOrders;
         }
 

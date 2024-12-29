@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Wolt.Core;
+using Wolt.Core.DTOs;
 using Wolt.Core.Models;
 using Wolt.Core.Services;
 using Wolt.Service;
@@ -11,10 +14,11 @@ namespace Wolt.API.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
-
-        public CustomerController(ICustomerService customerService)
+        private readonly IMapper _imapper;
+        public CustomerController(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
+            _imapper = mapper;
         }
 
 
@@ -22,7 +26,8 @@ namespace Wolt.API.Controllers
 
         public ActionResult GetCustomers()//כה עושים??
         {
-            return Ok(_customerService.GetAll());
+            
+            return Ok(_imapper.Map<IEnumerable<CustomerGetDto>>(_customerService.GetAll()));
         }
 
         //[HttpGet("Date")]
@@ -54,25 +59,29 @@ namespace Wolt.API.Controllers
         {
             Customer c = _customerService.GetByID(id);
             if ( c!= null)
+            {
+                var Customermap = _imapper.Map<CustomerGetDto>(c);
                 return Ok(c);
+            }              
             return NotFound("the customer isn't exsist");
             
         }
 
         [HttpPost]
 
-        public ActionResult PostNewOrder([FromBody] Customer customer)
+        public ActionResult PostNewOrder([FromBody] CustomerDto customer)
         {
-
-            if (_customerService.PostNewOrder(customer) == true)
+            var customerMap = _imapper.Map<Customer>(customer);
+            if (_customerService.PostNewOrder(customerMap) == true)
                 return Ok("the customer added");
             return NotFound("the customer is exsist");
         }
 
         [HttpPut("update customer {id}")]
-        public ActionResult PutCustomer(string id, [FromBody] Customer customer)
+        public ActionResult PutCustomer(string id, [FromBody] CustomerDto customer)
         {
-            if (_customerService.PutCustomer(id , customer) == true)
+            var customerMap = _imapper.Map<Customer>(customer);
+            if (_customerService.PutCustomer(id , customerMap) == true)
                 return Ok("the customer update");
             return NotFound("the customer isn't exsist");
 
