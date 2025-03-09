@@ -9,14 +9,14 @@ namespace Wolt.Core.Repositories
 {
     public interface ICustomerRepository
     {
-        public List<Customer> GetList();
+        public Task<List<Customer>> GetListAsync();
 
-        public Customer GetById(string id);
+        public  Task<Customer> GetByIdAsync(string id);
 
-        public void PostNewCustomer(Customer customer);
+        public  Task PostNewCustomerAsync(Customer customer);
 
-        public void updateCustomer(Customer c, Customer customer);
+        public  Task updateCustomerAsync(Customer c, Customer customer);
 
-        public void DeleteCustomer(Customer c, bool status);
+        public  Task DeleteCustomerAsync(Customer c, bool status);
     }
 }

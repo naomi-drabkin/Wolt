@@ -19,51 +19,51 @@ namespace Wolt.Service
             _customerRrepository = customerRrepository;
         }
 
-        public List<Customer> GetAll()
+        public async Task<List<Customer>> GetAllAsync()
         {
-            return _customerRrepository.GetList();
+            return await _customerRrepository.GetListAsync();
         }
 
-        public Customer GetByID(string id)
+        public async Task<Customer> GetByIDAsync(string id)
         {
 
-            if (_customerRrepository.GetById(id) != null)
-                return _customerRrepository.GetById(id);
+            if (await _customerRrepository.GetByIdAsync(id) != null)
+                return await _customerRrepository.GetByIdAsync(id);
             return null;
         }
 
 
-        public bool PostNewOrder(Customer customer)
+        public async Task<bool> PostNewOrderAsync(Customer customer)
         {
-            Customer c = _customerRrepository.GetList().Find(p => p.Customer_id.Equals(customer.Customer_id));
+            Customer c = (await _customerRrepository.GetListAsync()).Find(p => p.Customer_id.Equals(customer.Customer_id));
 
             if(c == null)
             {
-                _customerRrepository.PostNewCustomer(customer);
+                await _customerRrepository.PostNewCustomerAsync(customer);
                 return true;
             }
             return false;
         }
 
-        public bool PutCustomer(string id, Customer customer)
+        public async Task<bool> PutCustomerAsync(string id, Customer customer)
         {            
             
-            Customer c = _customerRrepository.GetList().Find(item => item.Customer_id.Equals(id));
+            Customer c = (await _customerRrepository.GetListAsync()).Find(item => item.Customer_id.Equals(id));
 
             if (c != null)
             {
-                _customerRrepository.updateCustomer(c, customer);
+                await _customerRrepository.updateCustomerAsync(c, customer);
                 return true;
             }
             return false;
         }
 
-        public bool Deleteorder(string id, bool status)
+        public async Task<bool> DeleteorderAsync(string id, bool status)
         {
-            Customer c = _customerRrepository.GetList().Find(item => item.Customer_id.Equals(id));
+            Customer c = (await _customerRrepository.GetListAsync()).Find(item => item.Customer_id.Equals(id));
             if (c != null)
             {
-                _customerRrepository.DeleteCustomer(c, status); 
+                await _customerRrepository.DeleteCustomerAsync(c, status); 
                 return true;
             }
             return false;

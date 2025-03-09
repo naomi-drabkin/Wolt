@@ -24,10 +24,11 @@ namespace Wolt.API.Controllers
 
         [HttpGet]
 
-        public ActionResult GetCustomers()//כה עושים??
+        public async Task<ActionResult> GetCustomersAsync()//כה עושים??
         {
-            
-            return Ok(_imapper.Map<IEnumerable<CustomerGetDto>>(_customerService.GetAll()));
+
+            var customers = await _customerService.GetAllAsync();
+            return Ok(_imapper.Map<IEnumerable<CustomerGetDto>>(customers));
         }
 
         //[HttpGet("Date")]
@@ -55,9 +56,9 @@ namespace Wolt.API.Controllers
 
         [HttpGet("customer_id{id}")]
 
-        public ActionResult GetByID(string id)
+        public async Task<ActionResult> GetByIDAsync(string id)
         {
-            Customer c = _customerService.GetByID(id);
+            Customer c = await _customerService.GetByIDAsync(id);
             if ( c!= null)
             {
                 var Customermap = _imapper.Map<CustomerGetDto>(c);
@@ -69,19 +70,19 @@ namespace Wolt.API.Controllers
 
         [HttpPost]
 
-        public ActionResult PostNewOrder([FromBody] CustomerDto customer)
+        public async Task<ActionResult> PostNewOrderAsync([FromBody] CustomerDto customer)
         {
             var customerMap = _imapper.Map<Customer>(customer);
-            if (_customerService.PostNewOrder(customerMap) == true)
+            if (await _customerService.PostNewOrderAsync(customerMap) == true)
                 return Ok("the customer added");
             return NotFound("the customer is exsist");
         }
 
         [HttpPut("update customer {id}")]
-        public ActionResult PutCustomer(string id, [FromBody] CustomerDto customer)
+        public async Task<ActionResult> PutCustomerAsync(string id, [FromBody] CustomerDto customer)
         {
             var customerMap = _imapper.Map<Customer>(customer);
-            if (_customerService.PutCustomer(id , customerMap) == true)
+            if (await _customerService.PutCustomerAsync(id , customerMap) == true)
                 return Ok("the customer update");
             return NotFound("the customer isn't exsist");
 
@@ -91,9 +92,9 @@ namespace Wolt.API.Controllers
 
         [HttpPut("status change")]
 
-        public ActionResult Deleteorder(string id, bool status)
+        public async Task<ActionResult> DeleteorderAsync(string id, bool status)
         {
-            if (_customerService.Deleteorder(id, status) == true)
+            if (await _customerService.DeleteorderAsync(id, status) == true)
                 return Ok("the status changed");
             return NotFound("the customer isn't exsist");
         }

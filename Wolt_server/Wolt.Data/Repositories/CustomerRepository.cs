@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -19,23 +20,23 @@ namespace Wolt.Data.Repositories
             _context = context;
         }
 
-        public List<Customer> GetList()
+        public async Task<List<Customer>> GetListAsync()
         {
-            return _context.customers.ToList();
+            return await _context.customers.ToListAsync();
         }
 
-        public Customer GetById(string id)
+        public async Task<Customer> GetByIdAsync(string id)
         {
-            return _context.customers.ToList().Find(p => p.Customer_id.Equals(id));
+            return await _context.customers.FirstOrDefaultAsync(p => p.Customer_id.Equals(id));    
         }
 
-        public void PostNewCustomer(Customer customer)
+        public async Task PostNewCustomerAsync(Customer customer)
         {
             _context.customers.Add(customer);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void updateCustomer(Customer  c ,Customer customer)
+        public async Task updateCustomerAsync(Customer c, Customer customer)
         {
             c.Customer_id = customer.Customer_id;
             c.Phone_number = customer.Phone_number;
@@ -44,14 +45,14 @@ namespace Wolt.Data.Repositories
             c.Building_address = customer.Building_address;
             c.Floor = customer.Floor;
             c.Orders = customer.Orders;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
 
-        public void DeleteCustomer(Customer c, bool status)
+        public async Task DeleteCustomerAsync(Customer c, bool status)
         {
             c.Status = status;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
         }
 

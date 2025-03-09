@@ -9,14 +9,14 @@ namespace Wolt.Core.Services
 {
     public interface ICustomerService
     {
-        List<Customer> GetAll();
+         Task<List<Customer>> GetAllAsync();
 
-        Customer GetByID(string id);
+         Task<Customer> GetByIDAsync(string id);
 
-        public bool PostNewOrder(Customer customer);
+         Task<bool> PostNewOrderAsync(Customer customer);
 
-        public bool PutCustomer(string id, Customer customer);
+         Task<bool> PutCustomerAsync(string id, Customer customer);
 
-        public bool Deleteorder(string id, bool status);
+         Task<bool> DeleteorderAsync(string id, bool status);
     }
 }
